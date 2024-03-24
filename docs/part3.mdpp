@@ -1,32 +1,3 @@
-# Проект "Единый Банковский Реестр"
-
-Чтобы скомпилировать `README.md` запусти:
-
-```markdown-pp index.mdpp -o README.md```
-
-<details>
-    <summary>1.</summary>
-
-    Предметная область - контроль банковской системы.
-    Сущности: банк, пользователь, пасспорт, счет, тип счета.
-
-</details>
-
-<details>
-    <summary>2.</summary>
-
-    **[Концептуальная модель](docs/conceptual-model.png)**
-
-    <img src="docs/conceptual-model.png" width="500">
-
-    **[Логическая модель](docs/logical-model.png)**
-
-    <img src="docs/logical-model.png" width="500">
-
-    **[Физическая модель](docs/physical-model.md)**
-
-</details>
-
 <details>
     <summary>3.</summary>
 

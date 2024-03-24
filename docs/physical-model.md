@@ -2,85 +2,65 @@
 
 ---
 
-Таблица `members`:
+Таблица `registry`:
 
-| Название        | Описание           | Тип данных     | Ограничение   |
-|-----------------|--------------------|----------------|---------------|
-| `memid`         | Идентификатор      | `INTEGER`      | `PRIMARY KEY` |
-| `surname`       | Фамилия клиента    | `VARCHAR(200)` | `NOT NULL`    |
-| `firstname`     | Имя клиента        | `VARCHAR(200)` | `NOT NULL`    |
-| `address`       | Адрес клиента      | `VARCHAR(300)` | `NOT NULL`    |
-| `zipcode`       | Почтовый индекс    | `INTEGER`      | `NOT NULL`    |
-| `telephone`     | Номер телефона     | `VARCHAR(20)`  | `NOT NULL`    |
-| `recommendedby` | Кем рекомендован   | `INTEGER`      | `FOREIGN KEY` |
-| `joindate`      | Дата присоединения | `TIMESTAMP`    | `NOT NULL`    |
+| Название        | Описание               | Тип данных     | Ограничение   |
+|-----------------|------------------------|----------------|---------------|
+| `reg_id`        | Идентификатор записи   | `BIGINT`       | `PRIMARY KEY` |
+| `user_id`       | Идентификатор клиента  | `BIGINT`       | `FOREIGN KEY` |
+| `account_id`    | Идентификатор счета    | `BIGINT`       | `FOREIGN KEY` |
+| `open_dt`       | Дата открытия счета    | `DATE`         | `NOT NULL`    |
+| `close_dt`      | Дата закрытия счета    | `DATE`         | `NULL`        |
 
-Таблица `facilities`:
+Таблица `user`:
 
-| Название             | Описание                                         | Тип данных     | Ограничение   |
-|----------------------|--------------------------------------------------|----------------|---------------|
-| `facid`              | Идентификатор                                    | `INTEGER`      | `PRIMARY KEY` |
-| `name`               | Имя                                              | `VARCHAR(100)` | `NOT NULL`    |
-| `membercost`         | Стоимость бронирования для членов                | `NUMERIC`      | `NOT NULL`    |
-| `guestcost`          | Стоимость бронирования для гостей                | `NUMERIC`      | `NOT NULL`    |
-| `initialoutlay`      | Первоначальная стоимость строительства           | `NUMERIC`      | `NOT NULL`    |
-| `monthlymaintenance` | Предполагаемые ежемесячные расходы на содержание | `NUMERIC`      | `NOT NULL`    |
+| Название             | Описание                    | Тип данных     | Ограничение   |
+|----------------------|-----------------------------|----------------|---------------|
+| `user_id`            | Идентификатор клиента       | `BIGINT`       | `PRIMARY KEY` |
+| `passport_id`        | Идентификатор паспорта      | `BIGINT`       | `FOREIGN KEY` |
+| `age_num`            | Возраст клиента             | `VARCHAR(30)`  | `NOT NULL`    |
+| `phone_num`          | Номер телефона клиента      | `VARCHAR(30)`  | `NOT NULL`    |
+| `email_txt`          | Электронная почта клиента   | `VARCHAR(300)` | `NOT NULL`    |
 
-Таблица `bookings`:
+Таблица `passport`:
 
-| Название    | Описание                        | Тип данных  | Ограничение   |
-|-------------|---------------------------------|-------------|---------------|
-| `bookid`    | Идентификатор брони             | `INTEGER`   | `PRIMARY KEY` |
-| `facid`     | Идентификатор объекта           | `INTEGER`   | `FOREIGN KEY` |
-| `memid`     | Идентификатор члена             | `INTEGER`   | `FOREIGN KEY` |
-| `starttime` | Начало брони                    | `TIMESTAMP` | `NOT NULL`    |
-| `slots`     | количество получасовых «слотов» | `INTEGER`   | `NOT NULL`    |
+| Название             | Описание                        | Тип данных     | Ограничение   |
+|----------------------|---------------------------------|----------------|---------------|
+| `passport_id`        | Идентификатор паспорта          | `BIGINT`       | `PRIMARY KEY` |
+| `passport_no`        | Номер паспорта                  | `VARCHAR(30)`  | `NOT NULL`    |
+| `passport_series`    | Серия паспорта                  | `VARCHAR(30)`  | `NOT NULL`    |
+| `first_nm`           | Имя клиента                     | `VARCHAR(300)` | `NOT NULL`    |
+| `second_nm`          | Фамилия клиента                 | `VARCHAR(300)` | `NOT NULL`    |
+| `birth_dt`           | Дата рождения клиента           | `DATE`         | `NOT NULL`    |
+| `issue_dt`           | Дата выдачи паспорта            | `DATE`         | `NOT NULL`    |
 
----
-Таблица `members`:
-```postgresql
-CREATE TABLE cd.members(
-   memid          INTEGER                NOT NULL,
-   surname        CHARACTER VARYING(200) NOT NULL,
-   firstname      CHARACTER VARYING(200) NOT NULL,
-   address        CHARACTER VARYING(300) NOT NULL,
-   zipcode        INTEGER                NOT NULL,
-   telephone      CHARACTER VARYING(20)  NOT NULL,
-   recommendedby  INTEGER,
-   joindate       TIMESTAMP              NOT NULL,
+Таблица `account`:
 
-   CONSTRAINT members_pk PRIMARY KEY (memid),
+| Название            | Описание                        | Тип данных  | Ограничение   |
+|---------------------|---------------------------------|-------------|---------------|
+| `account_id`        | Идентификатор счета             | `BIGINT`    | `PRIMARY KEY` |
+| `acc_type_id`       | Идентификатор типа счета        | `BIGINT`    | `FOREIGN KEY` |
+| `cur_balance_amt`   | Текущий баланс                  | `MONEY`     | `NOT NULL`    |
 
-   CONSTRAINT fk_members_recommendedby FOREIGN KEY (recommendedby)
-       REFERENCES cd.members(memid) ON DELETE SET NULL
-);
-```
-Таблица `facilities`:
-```postgresql
-CREATE TABLE cd.facilities(
-   facid               INTEGER                NOT NULL, 
-   name                CHARACTER VARYING(100) NOT NULL, 
-   membercost          NUMERIC                NOT NULL, 
-   guestcost           NUMERIC                NOT NULL, 
-   initialoutlay       NUMERIC                NOT NULL, 
-   monthlymaintenance  NUMERIC                NOT NULL, 
-   
-   CONSTRAINT facilities_pk PRIMARY KEY (facid)
-);
-```
-Таблица `bookings`:
-```postgresql
-CREATE TABLE cd.bookings(
-   bookid     INTEGER   NOT NULL, 
-   facid      INTEGER   NOT NULL, 
-   memid      INTEGER   NOT NULL, 
-   starttime  TIMESTAMP NOT NULL,
-   slots      INTEGER   NOT NULL,
-   
-   CONSTRAINT bookings_pk PRIMARY KEY (bookid),
-   
-   CONSTRAINT fk_bookings_facid FOREIGN KEY (facid) REFERENCES cd.facilities(facid),
-   
-   CONSTRAINT fk_bookings_memid FOREIGN KEY (memid) REFERENCES cd.members(memid)
-);
-```
+Таблица `account_type`:
+
+| Название               | Описание                        | Тип данных      | Ограничение   |
+|------------------------|---------------------------------|-----------------|---------------|
+| `acc_type_id`          | Идентификатор типа счета        | `BIGINT`        | `PRIMARY KEY` |
+| `bank_id`              | Идентификатор банка             | `BIGINT`        | `FOREIGN KEY` |
+| `start_dt`             | Дата старта условий             | `DATE`          | `NOT NULL`    |
+| `end_dt`               | Дата закрытия условий           | `DATE`          | `NULL`        |
+| `acc_type_txt`         | Тип счета                       | `VARCHAR(300)`  | `NOT NULL`    |
+| `replenishment_flg`    | Флаг пополнения счета           | `BOOLEAN`       | `NOT NULL`    |
+| `transfer_flg`         | Флаг перевода с счета           | `BOOLEAN`       | `NOT NULL`    |
+| `withdrawal_flg`       | Флаг снятия с счета             | `BOOLEAN`       | `NOT NULL`    |
+| `comission_amt`        | Комиссия банка                  | `MONEY`         | `NOT NULL`    |
+| `min_balance_amt`      | Минимальный балас счета         | `MONEY`         | `NOT NULL`    |
+
+Таблица `bank`:
+
+| Название             | Описание                    | Тип данных     | Ограничение   |
+|----------------------|-----------------------------|----------------|---------------|
+| `bank_id`            | Идентификатор банка         | `BIGINT`       | `PRIMARY KEY` |
+| `bank_nm`            | Название банка              | `VARCHAR(100)` | `NOT NULL`    |
+| `address_txt`        | Адрес банка                 | `VARCHAR(300)` | `NOT NULL`    |
