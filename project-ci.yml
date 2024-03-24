@@ -1,0 +1,82 @@
+image: python:3.9-slim
+
+# стейджи пайплайна
+stages:
+  - tasks # у этого стейджа есть стэпы: 'tasks from 3rd to 11th' & 'task 12th'
+
+# внутри пайплайна автоматически поднимается
+# пустая база Postgres (каждый раз на новый степ)
+services:
+  - name: postgres:15-alpine
+    alias: postgres
+
+
+
+variables:
+#  переменные окружения для Postgres
+  POSTGRES_DB: postgres
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: password
+  POSTGRES_HOST_AUTH_METHOD: trust
+
+#  переменные окружения для вспомогательного
+#  скрипта utils/pypsql.py и тестов
+  DBNAME: postgres
+  DBHOST: postgres
+  DBPORT: 5432
+  DBUSER: postgres
+  DBPASSWORD: password
+
+#  аккуратное формирование всяких абсолютных
+#  путей к файлам и директориям
+#  у вас будет ${PROJECT_DIR} тождественно равен ${CI_PROJECT_DIR}
+  PROJECT_DIR: ${CI_PROJECT_DIR}/project/example
+  ANALYSIS_DIR: ${PROJECT_DIR}/analysis
+  SCRIPTS_DIR: ${PROJECT_DIR}/scripts
+  TESTS_DIR: ${PROJECT_DIR}/tests
+  UTILS_DIR: ${PROJECT_DIR}/utils
+  PYPSQL: ${UTILS_DIR}/pypsql.py
+
+#  переменные для цвета в консоли (можете
+#  использовать какие-то другие свои)
+  NO_COLOUR: '\033[0m'
+  LIGHT_RED: '\033[1;31m'
+
+
+.setup:
+  before_script:
+    - pip install -r ${PROJECT_DIR}/requirements.txt > /dev/null 2> /dev/null
+
+
+tasks from 3rd to 11th:
+  stage: tasks
+  extends:
+    - .setup
+  script:
+    - echo -e "${LIGHT_RED}>>> Task №3 <<<${NO_COLOUR}"
+    - python3 ${PYPSQL} --file="${SCRIPTS_DIR}/clubdata_ddl.sql" --cat
+
+    - echo -e "${LIGHT_RED}>>> Task №4-5 <<<${NO_COLOUR}"
+    - python3 ${PYPSQL} --file="${SCRIPTS_DIR}/clubdata_inserts.sql"
+    - echo "Table 'cd.facilities' contains rows:"
+    - python3 ${PYPSQL} --sql="SELECT * FROM cd.facilities" --verbose
+    - echo "Table 'cd.members' contains rows:"
+    - python3 ${PYPSQL} --sql="SELECT * FROM cd.members" --verbose
+    - echo "Table 'cd.bookings' contains rows:"
+    - python3 ${PYPSQL} --sql="SELECT * FROM cd.bookings" --verbose
+
+    - echo -e "${LIGHT_RED}>>> Task №6-7 <<<${NO_COLOUR}"
+    - SCRIPT_PATH="${SCRIPTS_DIR}/select_count_tables.sql" pytest ${TESTS_DIR}/test_select_count.py
+
+    - echo -e "${LIGHT_RED}>>> Task №9 <<<${NO_COLOUR}"
+
+    - echo -e "${LIGHT_RED}>>> Task №10 <<<${NO_COLOUR}"
+
+
+task 12th:
+  stage: tasks
+  extends:
+    - .setup
+  script:
+    - python3 ${PYPSQL} --file="${SCRIPTS_DIR}/clubdata_ddl.sql"
+    - python3 ${ANALYSIS_DIR}/analysis.py
