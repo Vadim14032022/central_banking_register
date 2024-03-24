@@ -4,31 +4,23 @@
 
 ```markdown-pp index.mdpp -o README.md```
 
-<details>
-    <summary>1.</summary>
+### 1. Выбор темы проекта
+Предметная область - контроль банковской системы.
+Сущности: банк, пользователь, пасспорт, счет, тип счета.
 
-    Предметная область - контроль банковской системы.
-    Сущности: банк, пользователь, пасспорт, счет, тип счета.
+### 2. Проектирование базы данных
+**[Концептуальная модель](docs/conceptual-model.png)**
 
-</details>
+<img src="docs/conceptual-model.png" width="500">
 
-<details>
-    <summary>2.</summary>
+**[Логическая модель](docs/logical-model.png)**
 
-    **[Концептуальная модель](docs/conceptual-model.png)**
+<img src="docs/logical-model.png" width="500">
 
-    <img src="docs/conceptual-model.png" width="500">
-
-    **[Логическая модель](docs/logical-model.png)**
-
-    <img src="docs/logical-model.png" width="500">
-
-    **[Физическая модель](docs/physical-model.md)**
-
-</details>
+**[Физическая модель](docs/physical-model.md)**
 
 <details>
-    <summary>3.</summary>
+    <summary>3. DDL скрипты</summary>
 
 Создание таблиц:
 ```postgresql
