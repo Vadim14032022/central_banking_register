@@ -190,3 +190,17 @@ CREATE TABLE cbr.registry(
 
 </details>
 
+### 4. Наполнение созданной базы данными
+
+**[Код заполнения БД](scripts/bank_inserts.sql)**
+
+### 5. Запросы/CRUD-запросы к БД
+
+**[Раз](scripts/bank_queries_first.sql)**
+
+**[Два](scripts/bank_queries_second.sql)**
+
+### 6. SELECT-запросы к БД
+
+### 7.Тесты к запросам из предыдущего пункта
+
