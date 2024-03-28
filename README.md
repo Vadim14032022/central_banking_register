@@ -38,7 +38,7 @@
 |----------------------|-----------------------------|----------------|---------------|
 | `user_id`            | Идентификатор клиента(сгенерированный)       | `BIGINT`       | `PRIMARY KEY` |
 | `passport_id`        | Идентификатор паспорта      | `BIGINT`       | `FOREIGN KEY` |
-| `age_num`            | Возраст клиента             | `VARCHAR(30)`  | `NOT NULL`    |
+| `age_num`            | Возраст клиента             | `INTEGER`      | `NOT NULL`    |
 | `phone_num`          | Номер телефона клиента      | `VARCHAR(30)`  | `NOT NULL`    |
 | `email_txt`          | Электронная почта клиента   | `VARCHAR(300)` | `NOT NULL`    |
 
@@ -163,7 +163,7 @@ CREATE TABLE cbr.passport(
 CREATE TABLE cbr.user(
    user_id        BIGINT         NOT NULL, 
    passport_id    BIGINT         NOT NULL, 
-   age_num        VARCHAR(30)    NOT NULL, 
+   age_num        INTEGER        NOT NULL, 
    phone_num      VARCHAR(30)    NOT NULL,
    email_txt      VARCHAR(300)   NOT NULL,
    
