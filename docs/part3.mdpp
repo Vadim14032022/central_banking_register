@@ -1,4 +1,6 @@
-<details>
+### 3. DDL скрипты
+
+<details open>
     <summary>3. DDL скрипты</summary>
 
 Создание таблиц:
@@ -53,11 +55,12 @@ CREATE TABLE cbr.account(
 Таблица `passport`:
 ```postgresql
 CREATE TABLE cbr.passport(
-   passport_id       BIGINT        NOT NULL, 
+   passport_id       BIGINT         NOT NULL, 
    passport_no       VARCHAR(30)    NOT NULL, 
    passport_series   VARCHAR(30)    NOT NULL, 
    first_nm          VARCHAR(300)   NOT NULL, 
    second_nm         VARCHAR(300)   NOT NULL, 
+   third_nm          VARCHAR(300)   NOT NULL, 
    birth_dt          DATE           NOT NULL, 
    issue_dt          DATE           NOT NULL,
    
