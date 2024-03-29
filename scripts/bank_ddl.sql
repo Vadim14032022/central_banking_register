@@ -41,6 +41,7 @@ CREATE TABLE cbr.passport(
    passport_series   VARCHAR(30)    NOT NULL, 
    first_nm          VARCHAR(300)   NOT NULL, 
    second_nm         VARCHAR(300)   NOT NULL, 
+   third_nm          VARCHAR(300)   NOT NULL, 
    birth_dt          DATE           NOT NULL, 
    issue_dt          DATE           NOT NULL,
    
@@ -50,7 +51,6 @@ CREATE TABLE cbr.passport(
 CREATE TABLE cbr.user(
    user_id        BIGINT         NOT NULL,
    passport_id    BIGINT         NOT NULL, 
-   age_num        VARCHAR(30)    NOT NULL, 
    phone_num      VARCHAR(30)    NOT NULL,
    email_txt      VARCHAR(300)   NOT NULL,
    

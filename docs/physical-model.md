@@ -18,7 +18,6 @@
 |----------------------|-----------------------------|----------------|---------------|
 | `user_id`            | Идентификатор клиента       | `BIGINT`       | `PRIMARY KEY` |
 | `passport_id`        | Идентификатор паспорта      | `BIGINT`       | `FOREIGN KEY` |
-| `age_num`            | Возраст клиента             | `VARCHAR(30)`  | `NOT NULL`    |
 | `phone_num`          | Номер телефона клиента      | `VARCHAR(30)`  | `NOT NULL`    |
 | `email_txt`          | Электронная почта клиента   | `VARCHAR(300)` | `NOT NULL`    |
 
@@ -31,6 +30,7 @@
 | `passport_series`    | Серия паспорта                  | `VARCHAR(30)`  | `NOT NULL`    |
 | `first_nm`           | Имя клиента                     | `VARCHAR(300)` | `NOT NULL`    |
 | `second_nm`          | Фамилия клиента                 | `VARCHAR(300)` | `NOT NULL`    |
+| `third`              | Отчество клиента                | `VARCHAR(300)` | `NOT NULL`    |
 | `birth_dt`           | Дата рождения клиента           | `DATE`         | `NOT NULL`    |
 | `issue_dt`           | Дата выдачи паспорта            | `DATE`         | `NOT NULL`    |
 
