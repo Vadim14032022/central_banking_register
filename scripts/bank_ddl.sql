@@ -70,3 +70,10 @@ CREATE TABLE cbr.registry(
 
    CONSTRAINT FK_user_id FOREIGN KEY (user_id) REFERENCES cbr.user(user_id) 
 );
+
+-- данные индексы могут улучшить производительность операций,
+-- в которых используется эти внешние отношения
+CREATE INDEX idx_bank_id ON cbr.account_type (bank_id);
+CREATE INDEX idx_acc_type_id ON cbr.account (acc_type_id);
+CREATE INDEX idx_passport_id ON cbr.user (passport_id);
+CREATE INDEX idx_user_id ON cbr.registry (user_id);
