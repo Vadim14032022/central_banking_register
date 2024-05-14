@@ -1,20 +1,19 @@
 -- 1) Добавление нового клиента с открытием счета:
-CREATE OR REPLACE PROCEDURE cbr.add_user_with_account (
-  IN p_passport_no VARCHAR(30),
-  IN p_passport_series VARCHAR(30),
-  IN p_first_nm VARCHAR(300),
-  IN p_second_nm VARCHAR(300),
-  IN p_third_nm VARCHAR(300),
-  IN p_birth_dt DATE,
-  IN p_issue_dt DATE,
-  IN p_phone_num VARCHAR(30),
-  IN p_email_txt VARCHAR(300),
-  IN p_bank_id BIGINT,
-  IN p_acc_type_id BIGINT,
-  IN p_cur_balance_amt MONEY
-)
-LANGUAGE plpgsql
-AS $$
+CREATE
+OR REPLACE PROCEDURE cbr.add_user_with_account (
+    IN p_passport_no VARCHAR(30),
+    IN p_passport_series VARCHAR(30),
+    IN p_first_nm VARCHAR(300),
+    IN p_second_nm VARCHAR(300),
+    IN p_third_nm VARCHAR(300),
+    IN p_birth_dt DATE,
+    IN p_issue_dt DATE,
+    IN p_phone_num VARCHAR(30),
+    IN p_email_txt VARCHAR(300),
+    IN p_bank_id BIGINT,
+    IN p_acc_type_id BIGINT,
+    IN p_cur_balance_amt MONEY
+) LANGUAGE plpgsql AS $$
 DECLARE
   v_passport_id BIGINT;
   v_user_id BIGINT;
@@ -42,15 +41,13 @@ BEGIN
 END;
 $$;
 
-
 -- 2) Добавление банка в базу данных:
-CREATE OR REPLACE PROCEDURE cbr.add_bank (
-  IN p_bank_nm VARCHAR(300),
-  IN p_address_txt VARCHAR(300),
-  OUT p_new_bank_id BIGINT
-)
-LANGUAGE plpgsql
-AS $$
+CREATE
+OR REPLACE PROCEDURE cbr.add_bank (
+    IN p_bank_nm VARCHAR(300),
+    IN p_address_txt VARCHAR(300),
+    OUT p_new_bank_id BIGINT
+) LANGUAGE plpgsql AS $$
 BEGIN
     INSERT INTO cbr.bank (bank_nm, address_txt)
     VALUES (p_bank_nm, p_address_txt)
@@ -59,15 +56,14 @@ END;
 $$;
 
 -- 3) Открытие счёта клиента:
-CREATE OR REPLACE PROCEDURE cbr.open_account (
-  IN p_user_id BIGINT,
-  IN p_bank_id BIGINT,
-  IN p_acc_type_id BIGINT,
-  IN p_cur_balance_amt MONEY,
-  OUT p_new_account_id BIGINT
-)
-LANGUAGE plpgsql
-AS $$
+CREATE
+OR REPLACE PROCEDURE cbr.open_account (
+    IN p_user_id BIGINT,
+    IN p_bank_id BIGINT,
+    IN p_acc_type_id BIGINT,
+    IN p_cur_balance_amt MONEY,
+    OUT p_new_account_id BIGINT
+) LANGUAGE plpgsql AS $$
 DECLARE
   v_account_id BIGINT;
   v_open_dt DATE := CURRENT_DATE;
@@ -85,12 +81,8 @@ END;
 $$;
 
 -- 4) Закрытие счёта пользователя:
-CREATE OR REPLACE PROCEDURE cbr.close_user_account (
-  IN p_user_id BIGINT,
-  IN p_account_id BIGINT
-)
-LANGUAGE plpgsql
-AS $$
+CREATE
+OR REPLACE PROCEDURE cbr.close_user_account (IN p_user_id BIGINT, IN p_account_id BIGINT) LANGUAGE plpgsql AS $$
 BEGIN
   -- Обновляем дату закрытия счета
   UPDATE cbr.registry
@@ -99,13 +91,9 @@ BEGIN
 END;
 $$;
 
-
 -- 5) Подсчёт суммарного баланса всех счетов клиента
-CREATE OR REPLACE FUNCTION cbr.get_total_balance(
-    IN p_user_id BIGINT
-)
-RETURNS MONEY
-AS $$
+CREATE
+OR REPLACE FUNCTION cbr.get_total_balance (IN p_user_id BIGINT) RETURNS MONEY AS $$
 DECLARE
     v_total_balance MONEY;
 BEGIN
@@ -120,11 +108,8 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- 6) Подсчет общего количества открытых аккаунтов клиента
-CREATE OR REPLACE FUNCTION cbr.get_active_accounts_count(
-    IN p_bank_id BIGINT
-)
-RETURNS INTEGER
-AS $$
+CREATE
+OR REPLACE FUNCTION cbr.get_active_accounts_count (IN p_bank_id BIGINT) RETURNS INTEGER AS $$
 DECLARE
     v_active_count INTEGER;
 BEGIN
@@ -141,24 +126,16 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-
 -- 7) Возвращает таблицу с банками
-CREATE OR REPLACE FUNCTION cbr.get_all_banks()
-RETURNS TABLE (
+CREATE
+OR REPLACE FUNCTION cbr.get_all_banks () RETURNS TABLE (
     bank_id BIGINT,
     bank_nm VARCHAR(300),
     address_txt VARCHAR(300)
-)
-AS $$
+) AS $$
 BEGIN
     RETURN QUERY
     SELECT bank_id, bank_nm, address_txt
     FROM cbr.bank;
 END;
 $$ LANGUAGE plpgsql;
-
-
-
-
-
-
